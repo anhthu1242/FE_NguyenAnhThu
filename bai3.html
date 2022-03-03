@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inset row in a table - w3resource</title>
+</head>
+
+<body>
+    <table id="sampleTable" border="1">
+        <tr>
+            <td> Row1 cell1</td>
+            <td> Row1 cell2</td>
+        </tr>
+        <tr>
+            <td> Row2 cell1</td>
+            <td> Row2 cell2</td>
+        </tr>
+    </table>
+    <input type="button" onclick="insert_Row()" value="Insert row">
+
+    <!-- Khi click vào button thì thêm 1 dòng vào cuối bảng -->
+    <script>
+        function insert_Row() {
+            const addTr = document.createElement("tr");
+            addTr.innerHTML = "Dòng mới được thêm";
+            document.getElementById("sampleTable").appendChild(addTr);
+        }
+    </script>
+</body>
+
+</html>

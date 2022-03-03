@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS DOM paragraph style</title>
+</head>
+<body>
+    <p id="text" > JavaScript Exercises - w3resource</p>
+    <div>
+        <button id="jsstyle" onclick="js_style()">Style</button>
+    </div>
+
+    <!-- Khi click vào button thì thay đổi font size, color của text -->
+    <script >
+        function js_style(){
+            document.getElementById('text').style.color = 'red';
+            document.getElementById('text').style.fontSize = '100px';
+        }
+    </script>
+</body>
+</html>

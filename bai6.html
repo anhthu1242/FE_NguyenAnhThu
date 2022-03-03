@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lấy ra từ dài nhất</title>
+</head>
+<body>
+    <p id="bandau" > Công Ty Cổ Phần Rikkeisoft </p>
+
+    <b> Chuỗi dài nhất </b>
+    <p id="sauBD"></p>
+
+
+    <script>
+        var a = document.getElementById('bandau').innerText;
+        function findLongestWord (a) {
+            var words = a.split(' ');
+            var maxLength = 0;
+            // so sánh để lấy độ dài chuỗi
+            for (var i = 0; i < words.length; i++) {
+              if (words[i].length > maxLength) {
+                maxLength = words[i].length;
+                var y = console.log(words[i]);
+              }             
+            }
+            // lấy ra chữ dài nhất 
+            for (var i = 0; i < words.length; i++) {
+              if( maxLength === words[i].length){
+                    return words[i];
+            }      }
+            
+          }
+          var chuoi = findLongestWord(a);
+          document.getElementById('sauBD').innerHTML = chuoi;
+    </script>
+</body>
+</html>

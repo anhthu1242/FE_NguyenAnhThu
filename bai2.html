@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+    <p>
+        <a href="https://www.w3resource.com/" id="wJr" type="text/html" hreflang="en-us" target="_self">w3resource</a>
+    </p>
+    <button onclick="getAttributes()">Click here to get attributes value</button>
+    <!-- Khi click vào button thì alert ra tất cả thuộc tính và giá trị tương ứng của thẻ a -->
+    <script>
+        function getAttributes() {
+            /**
+
+            var arrays_a = document.getElementsByTagName('a');
+            var x1 = arrays_a[0].href;
+            var x2 = arrays_a[0].id;
+            var x3 = arrays_a[0].type;
+            var x4 = arrays_a[0].hreflang;
+            var x5 = arrays_a[0].target;
+
+             alert( x1 + "   " + x2 + "    " + x3 + "   " + x4 + "   " + x5);
+
+             */
+
+            // Chọn đến phần tử cần lấy thuộc tính thông qua JS DOM
+            var link = document.getElementById("wJr");
+
+            // Lấy giá trị của thuộc tính
+            var href = link.getAttribute("href");
+             var id = link.getAttribute("id");
+             var type = link.getAttribute("type");
+             var hreflang = link.getAttribute("hreflang");
+             var target = link.getAttribute("target");
+            // Thông báo giá trị lấy được
+
+            alert("href: " + href +"     id: " +id+ "     type: " +type+ "    hreflang: " +hreflang+ "     target:" + target)
+        }
+
+    </script>
+</body>
+
+</html>

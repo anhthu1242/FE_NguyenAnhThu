@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sắp xếp</title>
+</head>
+
+<body>
+    <!-- Viết hàm sắp xếp 1 chuỗi theo bảng chữ cái -->
+    <p id="bandau"> rikkeisoft </p>
+    <button onclick="bienDoi()">Click để đổi </button>
+    <p id="thuduoc"></p>
+
+
+    <script>
+        var chuoiBD = document.getElementById('bandau').innerHTML;
+        const myArr = chuoiBD.split("");
+        var b = myArr.sort();
+        document.getElementById("thuduoc").innerHTML = b;
+    </script>
+</body>
+
+</html>
