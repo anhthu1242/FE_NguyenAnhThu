@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container"
+        style="background-color: aqua; margin:10px; text-align:center; font-size:20px; width:700px; height:300px">
+        <div class="timer">
+            <span class="hours">00</span>
+            <span> : </span>
+            <span class="minutes">00</span>
+            <span> : </span>
+            <span class="second-container">
+                <span class="seconds">00</span>
+                <span class="milliseconds">000</span>
+            </span>
+
+        </div>
+        <div class="bottom-controls">
+            <div class="btns">
+                <button id="pause-btn" style="display: none;">Pause</button>
+                <button id="start-btn">Start</button>
+                <button id="clear-btn">Clear</button>
+            </div>
+            <div class="btns-setting">
+                <div class="btns-number">
+                    <button class="number-btn">0</button>
+                    <button class="number-btn">1</button>
+                    <button class="number-btn">2</button>
+                    <button class="number-btn">3</button>
+                    <button class="number-btn">4</button>
+                    <button class="number-btn">5</button>
+                    <button class="number-btn">6</button>
+                    <button class="number-btn">7</button>
+                    <button class="number-btn">8</button>
+                    <button class="number-btn">9</button>
+                </div>
+                <div class="btns-control">
+                    <button class="setting">Setting</button>
+                    <button class="clear">Clear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function putValue() {
+            document.querySelector(".milliseconds").innerText = ms;
+            document.querySelector(".seconds").innerText = sec;
+            document.querySelector(".minutes").innerText = min;
+            document.querySelector(".hours").innerText = hr;
+        }
+        let sec = document.querySelector(".seconds").innerText;
+        let min = document.querySelector(".minutes").innerText;
+        let hr = document.querySelector(".hours").innerText;
+
+        let dem = 0, tam = "";
+        for (let i = 0; i < document.querySelectorAll(".number-btn").length; i++) {
+            document.querySelectorAll(".number-btn")[i].onclick = function () {
+                dem++;
+                tam += document.querySelectorAll(".number-btn")[i].innerText;
+                if (dem == 1) {
+                    sec = "0" + tam;
+                    putValue();
+                }
+                if (dem == 2) {
+                    sec = tam;
+                    putValue();
+                }
+                if (dem == 3) {
+                    min = "0" + tam[0];
+                    sec = tam[1] + tam[2];
+                    putValue();
+                }
+                if (dem == 4) {
+                    min = tam[0] + tam[1];
+                    sec = tam[2] + tam[3];
+                    putValue();
+                }
+                if (dem == 5) {
+                    hr = "0" + tam[0];
+                    min = tam[1] + tam[2];
+                    sec = tam[3] + tam[4];
+                    putValue();
+                }
+                if (dem == 6) {
+                    hr = tam[0] + tam[1];
+                    min = tam[2] + tam[3];
+                    sec = tam[4] + tam[5];
+                    putValue();
+                }
+            }
+        }
+
+        if (sec == "00" && min == "00" && hr == "00") {
+            hr = min = "0" + 0;
+            ms = "00" + 0;
+            sec = 10;
+        }
+
+        let startTimer;
+
+        const startBtn = document.querySelector("#start-btn");
+        const resetBtn = document.querySelector("#clear-btn");
+        const setBtn = document.querySelector("#setting");
+        const clearBtn = document.querySelector("#clear");
+        const pauseBtn = document.querySelector("#pause-btn");
+
+
+        function start() {
+            startBtn.classList.add("on");
+            startBtn.textContent = 'Pause';
+            startTimer = setInterval(() => {
+                ms != 0 ? ms-- : ms = 0;
+                if (ms < 10) ms = "00" + ms;
+                if (ms >= 10 && ms <= 99) ms = "0" + ms;
+                if (ms == 0) {
+                    if (sec > 0) {
+                        sec--;
+                        sec = sec < 10 ? "0" + sec : sec;
+                        ms = 100;
+                    }
+                }
+                if (sec == 0) {
+                    if (min > 0) {
+                        min--;
+                        min = min < 10 ? "0" + min : min;
+                        sec = 59;
+                    }
+                }
+                if (min == 0) {
+                    if (hr > 0) {
+                        hr--;
+                        hr = hr < 10 ? "0" + hr : hr;
+                        min = 59;
+                    }
+                }
+                if (hr == "00" && min == 0 && sec == 0 && ms == 0) reset();
+                putValue();
+
+            }, 10);
+
+        }
+        document.getElementById('start-btn').addEventListener('click', function () {
+            document.getElementById('pause-btn').style.display = "block";
+            document.getElementById('start-btn').style.display = "none";
+        });
+
+        document.getElementById('pause-btn').addEventListener('click', function () {
+            document.getElementById('pause-btn').style.display = "none";
+            document.getElementById('start-btn').style.display = "block";
+        })
+        function stop() {
+            startBtn.textContent = 'Continue';
+            clearInterval(startTimer);
+
+        }
+        function clear() {
+            startBtn.classList.remove("on");
+            startBtn.textContent = 'Start';
+            clearInterval(startTimer);
+            hr = min = sec = "0" + 0;
+            ms = "00" + 0;
+            putValue();
+        }
+
+        function reset() {
+            startBtn.classList.remove("on");
+            startBtn.textContent = 'Start';
+            clearInterval(startTimer);
+            hr = min = "0" + 0;
+            ms = "00" + 0;
+            sec = "1" + 0;
+            putValue();
+        }
+        resetBtn.addEventListener("click", reset);
+        setBtn.addEventListener("click", function () {
+            document.querySelector(".btns").classList.add("on");
+            document.querySelector(".btns-setting").classList.add("off");
+            if (sec == "00" && min == "00" && hr == "00") {
+                hr = min = "0" + 0;
+                ms = "00" + 0;
+                sec = 10;
+            }
+            putValue();
+        });
+        clearBtn.addEventListener("click", clear);
+    </script>
+</body>
+
+</html>

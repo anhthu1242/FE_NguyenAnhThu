@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch API</title>
+
+</head>
+
+<body>
+    <div class="container">
+        <h1>Thông tin người dùng</h1>
+        <table id="user-info" style="border: 1px soild #000;"></table>
+    </div>
+    <script>
+        var postApi = "https://randomuser.me/api/";
+        fetch(postApi)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (user) {
+                var result = user;
+                var info = result["results"];
+                var htmls = info.map(function (inf) {
+                    return `
+                        <tr>
+                            <td class="user-info-items">Họ tên: ${inf.name.title} ${inf.name.first} ${inf.name.last}</td>
+                        </tr>
+                        <tr>
+                            <td class="user-info-items">Email: ${inf.email}</td>
+                        </tr>
+                        <tr>
+                            <td class="user-info-items">Ngày sinh: ${inf.dob.date}</td>
+                        </tr>
+                        <tr>
+                            <td class="user-info-items">Địa chỉ: ${inf.location.street.number} ${inf.location.street.name}
+                                ${inf.location.city} ${inf.location.state} ${inf.location.country}</td>
+                        </tr>
+                        <tr>
+                            <td class="user-info-items">Số điện thoại: ${inf.phone}</td>
+                        </tr>
+                     `;
+                });
+                var html = htmls.join("");
+                document.getElementById('user-info').innerHTML = html;
+            })
+            .catch(function (err) {
+                alert(err);
+            });
+    </script>
+
+    
+</body>
+
+</html>
