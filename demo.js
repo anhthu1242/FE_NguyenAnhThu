@@ -1,149 +1,164 @@
-const divTag = document.getElementById("container");
+const divTag = document.getElementById("react-id");
 
-const User = (props,index) => {
-    return (
-        <div key={index}>Name: {props.name} - Age: {props.age}</div>
-    )
+
+
+const Member = (props) => {
+    const {name, age, handleTranfer, handleUpdate} = props;
+    return <div>
+        <span>name: {name}</span> -<span>age: {age}</span>
+        <button onClick={() => handleTranfer()}>tranfer</button>
+        <button onClick={()=> handleUpdate()}>Edit</button>
+    </div>
 }
+const INIT_DATA = {
+    name: "",
+    age: "",
+    classType: "react"
+}
+const TranferMember = () => {
 
-function Component(props) {
-    const [reactmems, setReactmems] = React.useState([
-        {name: "Đinh Tuấn Anh", age: 20},
-        {name: "Ngụy Minh Thắng", age: 21},
-        {name: "Nguyễn Anh Thư", age: 22}
-    ]);
-
-    const [javamems, setJavamems] = React.useState([
-        {name: "Bế Trọng Hiếu", age: 20},
-        {name: "Ngô Huỳnh Đức", age: 19},
-        {name: "Nguyễn Mạnh Dũng", age: 18}
-    ]);
-    
-    function handleSubmit(evt) {
-        evt.preventDefault();
-        let nameInput = document.getElementById("nameInput");
-        let ageInput = document.getElementById("ageInput");
-        if (nameInput.value == "" || ageInput.value == ""){
-            alert("Vui lòng nhập đầy đủ thông tin")
-        }
-        else{
-            reactmems.push({name: nameInput.value, age: ageInput.value})
-            setReactmems([...reactmems]);
-            nameInput.value="";
-            ageInput.value="";
-        }
+    const [reactMembers, setReactMember] = React.useState(() => {
+        return [
+            { name: "Đinh Tuấn Anh", age: 20 },
+            { name: "Ngụy Minh Thắng", age: 21 },
+            { name: "Nguyễn Anh Thư", age: 22 }
+        ]
+    });
+    // useState có thể nhận vào 1 function, giá trị mà function này return về sẽ dùng để khởi tạo state
+   
+    const [javaMembers, setJavaMember] = React.useState(() => {
+        return [
+            { name: "Bế Trọng Hiếu", age: 20 },
+            { name: "Ngô Huỳnh Đức", age: 19 },
+            { name: "Nguyễn Mạnh Dũng", age: 18 }
+        ]
+    });
+    const saveData = () => {
+        localStorage.setItem("members", JSON.stringify({
+            javaMembers,
+            reactMembers,
+        }))
     }
-
-    var isReact = true;
-
-    function handleEdit(name,age,index){
-        let nameEdit = document.getElementById("nameEdit");
-        let ageEdit = document.getElementById("ageEdit"); 
-        let indexUser = document.getElementById("index-user"); 
-        nameEdit.value=name;
-        ageEdit.value=age;
-        indexUser.value = index;
-        if (!reactmems.some(el => el.name == nameEdit.value && el.age == ageEdit.value)) isReact = false;
-    
-    }
-
-    function handleUpdate(evt) {
-        evt.preventDefault();
-        let nameEdit = document.getElementById("nameEdit");
-        let ageEdit = document.getElementById("ageEdit"); 
-        let indexUser = document.getElementById("index-user"); 
-        if (nameEdit.value == "" || ageEdit.value == ""){
-            alert("Vui lòng nhập đầy đủ thông tin")
-        }
-        else{
-            if (isReact){
-                reactmems.splice(indexUser.value,1, {name: nameEdit.value, age: ageEdit.value});
-                setReactmems([...reactmems]);
-            }
-            else {
-                javamems.splice(indexUser.value,1, {name: nameEdit.value, age: ageEdit.value});
-                setJavamems([...javamems]);
-            }
-            nameEdit.value="";
-            ageEdit.value="";
-        }
-    }
-
     React.useEffect(() => {
-        return () => {
-           if (reactmems.length == 0) alert("Warning: React class is empty now")
-           else if (javamems.length ==0) alert ("Warning: Java class is empty now")
+        if (javaMembers.length ===0) {
+            alert("WARNING: java class is empty now")
+        } else if (reactMembers.length === 0) {
+            alert("WARNING: react class is empty now")
         }
+        saveData();
+    } , [reactMembers.length, javaMembers.length])
+
+    
+    const tranferReactToJavaMember = (index) => {
+        const el = reactMembers[index];
+        reactMembers.splice(index, 1);
+        javaMembers.push(el);
+        setReactMember([...reactMembers]);
+        setJavaMember([...javaMembers]);
+    }
+    const tranferJavaToReactMember = (index) => {
+        const el = javaMembers[index];
+        javaMembers.splice(index, 1);
+        reactMembers.push(el);
+        setReactMember([...reactMembers]);
+        setJavaMember([...javaMembers]);
+    }
+
+    const [formData, setFormData] = React.useState(INIT_DATA)
+
+    const handleInput = (e) => {
+        const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+        setFormData({
+            ...formData,
+            [e.target.name]: value,
+            })
+    }
+   const handleSubmit = () => {
+        if (formData.classType === 'react') {
+            reactMembers.push(formData);
+            setReactMember([...reactMembers])
+        } else {
+            javaMembers.push(formData)
+            setJavaMember([...javaMembers])
+        }
+        setFormData(INIT_DATA)
+   }
+   const FillReact=(user, index) => {
+    setFormData({
+      ...user,
+      index: index,
+      classType: 'react'
     })
+  }
+  const FillJava=(user, index) => {
+    setFormData({
+      ...user,
+      index: index,
+      classType: 'java'
+    })
+  }
 
     return (
         <div>
-            <h1 className="title">List member of React class</h1>
-            <span>{reactmems.length>0 ? reactmems.map((reactmem,index) => {
-                var name = reactmem.name;
-                var age = reactmem.age;
-                return (
-                    <div className="user-list">
-                       <User key={index} name={reactmem.name} age={reactmem.age} />
-                      
-                       <button
-                       onClick={() => {
-                       javamems.push({name: name, age: age})
-                       reactmems.splice(index,1)
-                       setReactmems([...reactmems])}}>tranfer</button>
-                       <button onClick={() => handleEdit(name,age,index)}>edit</button>
-                    </div>
-                )
-            }) : "Empty class"}</span>
+        <h1>list member of React class</h1>
+        {reactMembers.length > 0 ? reactMembers.map((user, index) => {
+            return <Member name={user.name} age={user.age}
+            key={index}
+            handleTranfer={() => tranferReactToJavaMember(index)}
+            handleUpdate = {()=> FillReact(user,index)}
+            //   renderExtend={() => <span>hello by react</span> 
+            />
+        }) : "empty class"}
+        <h1>list member of Java class</h1>
+        {javaMembers.length > 0 ?javaMembers.map((user,index) => {
+            return <Member name={user.name} age={user.age}
+            key={index}
+             handleTranfer={() => tranferJavaToReactMember(index)}
+             handleUpdate = {()=> FillJava(user,index)}
+            //   renderExtend={() => <span>hello by java</span>}/>
 
-            <h1 className="title">List member of Java class</h1>
-            <span >{javamems.length>0 ? javamems.map((javamem,index) => {
-                var name = javamem.name;
-                var age = javamem.age;
-                return (
-                    <div className="user-list">
-                       <User key={index} name={javamem.name} age={javamem.age} />
-                      
-                       <button
-                       onClick={() => {
-                       reactmems.push({name: name, age: age})
-                       javamems.splice(index,1)
-                       setJavamems([...javamems])}}>tranfer</button>
-                       <button onClick={() => handleEdit (name,age,index)}>edit</button>
-                    </div>
-                )
-            }) : "Empty class"}</span>
-            
-            <h1 className="title">Form add member</h1>
-            <form onSubmit={handleSubmit}>
-               <div className="info-input">
-                  <label>
-                     Name: <input type="text" id="nameInput"/>
-                  </label>
-                  <label>
-                     Age: <input type="text" id="ageInput" />
-                  </label>
-               </div>
-               <input type="submit" value="add member" />
-            </form>
+             />
+        }) : "empty class" }
+        <h1> Member</h1>
+        <form
+            onSubmit={(e) => {
+                e.preventDefault();
+                // e.preventDefault() dùng để bỏ qua sự kiện mặc định của event của 1 thẻ html nào đó như thẻ form, a
+                handleSubmit();
+            }}
+        >
+            <label>name</label>
+            <input 
+            name="name"
+            value={formData.name}
+            onChange={(e) => handleInput(e)}></input>
+            {" --- "}
+            <label>age</label>
+            <input
+            value={formData.age}
+            name="age"
+            onChange={(e) => handleInput(e)}
+            ></input>
+            <select
+            name="classType"
+            onChange={(e) => handleInput(e)}
+            value={formData.classType}>
+                <option value="react">React</option>
+                <option value="java">Java</option>
+            </select>
+            <button >submit</button> 
+            <button >Update</button>
+            {/* checkme<input type="checkbox" name="testCheckbox" /> */}
+        </form>
 
-            <h1 className="title">Form edit</h1>
-            <form onSubmit={handleUpdate}>
-               <input type="text" id="index-user" />
-               <div className="info-input">
-                  <label>
-                     Name: <input type="text" id="nameEdit"/>
-                  </label>
-                  <label>
-                     Age: <input type="text" id="ageEdit" />
-                  </label>
-               </div>
-               <input type="submit" value="update" />
-            </form>
+        
+           
+        
         </div>
     )
+
 }
 
 ReactDOM.render(<div>
-    <Component />
+    <TranferMember />
     </div>, divTag);
