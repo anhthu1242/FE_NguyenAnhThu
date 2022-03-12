@@ -1,0 +1,18 @@
+- React useMemo Hook
+    + React useMemoHook trả về một giá trị được ghi nhớ.
+    + useMemoHook chỉ chạy khi một trong các phần phụ thuộc của nó cập nhật 
+    + useMemoHook  được sử dụng để giữ cho các chức năng tốn nhiều tài nguyên không hoạt động một cách không cần thiết .
+    + Có thể sử dụng useMemoHook để ghi nhớ hàm expensiveCalculation làm cho chức năng chỉ chạy khi cần thiết
+    + useMemoHook chấp nhận một tham số thứ hai để khai báo các phụ thuộc . Hàm expensiveCalculation sẽ chỉ chạy khi các phụ thuộc của nó đã thay đổi.
+    + Ví dụ: const calculation = useMemo(() => expensiveCalculation(count), [count]);
+
+- useCallback
+    + React useCallbackHook trả về một hàm gọi lại đã ghi nhớ.
+    + useCallbackHook chỉ chạy khi một trong các phần phụ thuộc của nó cập nhật.
+    + Để sử dụng useCallback là ngăn một thành phần hiển thị lại trừ khi các thành phần của nó đã thay đổi.
+
+====>  Sự khác biệt chính là useMemotrả về một giá trị được ghi nhớ và useCallbacktrả về một hàm được ghi nhớ
+
+- Custom Hooks
+    + là chức năng có thể tái sử dụng.
+    + 
