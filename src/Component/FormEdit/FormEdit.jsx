@@ -1,60 +1,70 @@
-import { Link, useNavigate } from 'react-router-dom';
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { listJava, listReact, editData } from '../dataImprivate';
-import { useRecoilState } from 'recoil';
-
+import { useRecoilState } from "recoil";
+import { reactMembers, javaMembers, editInfo } from "../dataImprivate";
 const FormEdit = () => {
-    const { register, handleSubmit, formState: { errors }, reset } = useForm();
-    const [listReactMember, setListReactMember] = useRecoilState(listReact);
-    const [listJavaMember, setListJavaMember] = useRecoilState(listJava);
-    const [data, setData] = useRecoilState(editData);
-    const navigate = useNavigate()
-
-
-    const onSumit = (e) => {
-        if (data.type === 'react') {
-            const a = [...listReactMember]
-            a[data.index] = {
-                name: e.name,
-                age: +e.age
-            };
-            setListReactMember([...a])
-        } else if (data.type === 'java') {
-            const a = [...listJavaMember]
-            a[data.index] = {
-                name: e.name,
-                age: +e.age
-            };
-            setListJavaMember([...a])
-        }
-        reset();
-        setData({});
-        navigate('/');
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }, reset
+  } = useForm();
+  const navigate= useNavigate()
+  const onSubmit = (data) => {
+    if (data.classType === "react") {
+      const e1=[...reactMember]
+      e1[info.index]= data
+      setReactMember([...e1])
+    } else if (data.classType === "java") {
+      const e1=[...javaMember]
+      e1[info.index]= data
+      setJavaMember([...e1])
+    } else {
+      alert("can not edit member, an occur may be appeared");
     }
+    reset();
+    setInfo({})
+    navigate("/")
+  };
+  const [reactMember, setReactMember] = useRecoilState(reactMembers);
+  const [javaMember, setJavaMember] = useRecoilState(javaMembers);
+  const [info, setInfo] = useRecoilState(editInfo);
+  
+  return (
+    <div>
+      <Link to="/">Return to home</Link>
+      <h3>Edit member </h3>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <label htmlFor="name">
+          {" "}
+          name
+          <input defaultValue={info.name} {...register("name", { required: true })} />
+          {errors.name?.type === "required" && (
+            <span style={{ color: "red" }}>name is required</span>
+          )}
+        </label>
+        <label htmlFor="age">
+          {" "}
+          age
+          <input
+            defaultValue={info.age}
+            type="number"
+            {...register("age", { required: true, min: 1, max: 150 })}
+          />
+          {errors.age && (
+            <span style={{ color: "red" }}>
+              age is required and has type of number
+            </span>
+          )}
+        </label>
+        <select defaultValue={info.type} {...register("classType")}>
+          <option value="react">React</option>
+          <option value="java">Java</option>
+        </select>
+        <input type="submit" />
+      </form>
+    </div>
+  );
+};
 
-    return (
-        <>
-            <form onSubmit={handleSubmit(onSumit)} style={{ display: 'flex', flexDirection: 'column', width: '300px' }}>
-                <label>
-                    Name:
-                    <input defaultValue={data.name} {...register("name", { required: true })} style={{ width: '100%' }} />
-                </label>
-                {errors.name && <span style={{ color: 'red' }}>Vui lòng nhập trường này</span>}
-                <label>
-                    Age:
-                    <input type="number" defaultValue={data.age} {...register("age", { required: true })} style={{ width: '100%' }} />
-                </label>
-                {errors.age && <span style={{ color: 'red' }}>Vui lòng nhập trường này</span>}
-                <select {...register("class")} defaultValue={data.type} disabled>
-                    <option value="react">React</option>
-                    <option value="java">Java</option>
-                </select>
-                <button type="submit" style={{ width: '100px' }}>Edit member</button>
-            </form>
-            <Link to="/">Return userPage</Link>
-        </>
-    )
-
-}
-
-export default FormEdit
+export default FormEdit;
